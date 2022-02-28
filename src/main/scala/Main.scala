@@ -19,7 +19,27 @@ object Main extends IOApp {
       "user_email CHAR(64) NOT NULL, "+
       "user_password CHAR(32) NOT NULL, "+
       "PRIMARY KEY ( user_id ))ENGINE=InnoDB DEFAULT CHARSET=utf8;")
-    // TODO: create other tables here...
+    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS item( "+
+      "item_id INT NOT NULL AUTO_INCREMENT, "+
+      "item_name CHAR(64) NOT NULL, "+
+      "item_description CHAR(128), "+
+      "item_price FLOAT NOT NULL, "+
+      "item_condition CHAR(32) NOT NULL, " +
+      "item_category CHAR(32) NOT NULL, " +
+      "item_status TINYINT NOT NULL, " +
+      "PRIMARY KEY ( item_id ))ENGINE=InnoDB DEFAULT CHARSET=utf8;")
+    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS post( "+
+      "post_id INT NOT NULL AUTO_INCREMENT, "+
+      "user_id INT NOT NULL, "+
+      "item_id INT NOT NULL, "+
+      "post_date DATE NOT NULL, "+
+      "PRIMARY KEY ( post_id ))ENGINE=InnoDB DEFAULT CHARSET=utf8;")
+    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS cart( "+
+      "cart_id INT NOT NULL AUTO_INCREMENT, "+
+      "user_id INT NOT NULL, "+
+      "item_id INT NOT NULL, "+
+      "add_date Date NOT NULL, "+
+      "PRIMARY KEY ( cart_id ))ENGINE=InnoDB DEFAULT CHARSET=utf8;")
 
     val rs: ResultSet = stmt.executeQuery("SELECT user_name from user WHERE user_name='admin';")
     var hasAdmin: Boolean = false
@@ -33,6 +53,14 @@ object Main extends IOApp {
         "(user_name, user_email, user_password) " +
         "VALUES "+
         "(\"admin\", \"admin@root.com\", \"123456\");")
+      stmt.executeUpdate("INSERT INTO item " +
+        "(item_name, item_description, item_price, item_condition, item_category, item_status) " +
+        "VALUES "+
+        "(\"Notebook\", \"Brand New Notebooks.\", 5.85, \"Like_New\", \"Education\", 0);")
+      stmt.executeUpdate("INSERT INTO post " +
+        "(user_id, item_id, post_date) " +
+        "VALUES "+
+        "(1, 1, '2021-12-21');")
     }
     println("Database Initialization Completed.")
   }
@@ -104,6 +132,7 @@ object Main extends IOApp {
     choice match {
       case 49 =>
         // TODO: view all the postings
+        PostingPage.PostingPageLoop(user)
         mainLogic(user)
       case 50 =>
         // TODO: go to your shopping cart
