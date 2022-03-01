@@ -141,7 +141,7 @@ object Main extends IOApp {
         // TODO: go to your posting space
         mainLogic(user)
       case 52 =>
-        // TODO: edit your personal information
+        PersonalInfo.PersonalInfoLoop(user)
         mainLogic(user)
       case 48 =>
         println("Exit 2rd Hand Trading Backend System.")
