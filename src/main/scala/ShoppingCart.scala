@@ -66,6 +66,7 @@ object ShoppingCart {
 
 
   def RemoveFromShoppingCart(user: User): Unit = {
+    val user_id = user.userId
     val stmt = connection.createStatement()
     println("Select the item you want to pay for.")
     val item_id = readLine("Enter the item id: ")

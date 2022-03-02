@@ -52,7 +52,7 @@ object PostingPage {
   }
   }
 
-  def AddToShoppingCart(user: User): Boolean = {
+  def AddToShoppingCart(user: User): Unit = {
     val stmt = connection.createStatement()
     println("Please enter choose the item.")
     val item_id = readLine("Enter item id: ")
@@ -67,7 +67,7 @@ object PostingPage {
       println("Successfully add the item to your shopping cart!")
     }
     else{
-      false
+      println("Error: please try again.")
     }
   }
 }
