@@ -56,7 +56,7 @@ object ShoppingCart {
       val item_category = rs.getString("item_category")
       val item_status = rs.getByte("item_status")
       println("cart_id" + "," + "user_id" + "," + "add_date" + "," + "item_id" + "," + "item_name" + "," +
-        "item_description" + "," + "item_price" + "," + "item_condition" + "," + "item_category" + "," + "item_status") +
+        "item_description" + "," + "item_price" + "," + "item_condition" + "," + "item_category" + "," + "item_status") 
       println(s"'$cart_id','$user_id','$add_date','$item_id','$item_name','$item_description','$item_price'" +
         s",'$item_condition','$item_category','$item_status'")
 
