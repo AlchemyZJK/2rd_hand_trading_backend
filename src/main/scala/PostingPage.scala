@@ -31,9 +31,9 @@ object PostingPage {
   def ShowAllPostings(): Unit = {
     val stmt = connection.createStatement()
     val rs: ResultSet = stmt.executeQuery("SELECT post_id,user_id,post_date,post.item_id as item_id" +
-      ", item_name,item_description, item_price, item_condition, item_category, item_status from" +
-      "post join item" +
-      "on post.item_id = item.item_id")
+      ", item_name,item_description, item_price, item_condition, item_category, item_status from " +
+      "post join item " +
+      "on post.item_id = item.item_id;")
     while (rs.next()){
       val post_id = rs.getInt("post_id")
       val user_id = rs.getInt("user_id")
@@ -56,14 +56,14 @@ object PostingPage {
     val stmt = connection.createStatement()
     println("Please enter choose the item.")
     val item_id = readLine("Enter item id: ")
-    val user_id = user.userId
-    val rsCurdate: ResultSet = stmt.executeQuery("SELECT CURDATE() as AddDate")
+    val user_id = user.id
+    val rsCurdate: ResultSet = stmt.executeQuery("SELECT CURDATE() as addDate;")
     if (rsCurdate.next()) {
-      rsCurdate.next()
-      val add_date = rsCurdate.getDate("AddDate")
-      stmt.executeUpdate("INSERT INTO cart (cart_id, user_id, item_id, add_date)" +
+      //rsCurdate.next()
+      val add_date = rsCurdate.getDate("addDate")
+      stmt.executeUpdate("INSERT INTO cart (user_id, item_id, add_date) " +
       "VALUES " +
-      s"('$user_id','$item_id','$add_date'")
+      s"('$user_id','$item_id','$add_date')")
       println("Successfully add the item to your shopping cart!")
     }
     else{

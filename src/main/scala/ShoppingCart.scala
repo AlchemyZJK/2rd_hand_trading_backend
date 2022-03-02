@@ -10,7 +10,8 @@ object ShoppingCart {
     println("You could do the following Operations:\n" +
       "- View your Shopping Cart: [1]\n" +
       "- Choose an item and Add it to your Shopping Cart: [2]\n" +
-      "- Check out and remove an item from your Shopping Cart: [3]\n" +
+      "- Remove an item from your Shopping Cart: [3]\n" +
+      "- Check out an item from your Shopping Cart: [4]\n" +
       "- Go Back to Main Page: [0]"
     )
     val choice = readChar()
@@ -26,9 +27,14 @@ object ShoppingCart {
         PostingPage.AddToShoppingCart(user)
         ShoppingCartLoop(user)
       case 51 =>
-        println("TODO: Check out and remove an item from your Shopping Cart")
+        println("TODO: Remove an item from your Shopping Cart")
         //TODO:Remove an item from your Shopping Cart
         RemoveFromShoppingCart(user)
+        ShoppingCartLoop(user)
+      case 52 =>
+        println("TODO: Check out an item from your Shopping Cart")
+        //TODO:Check out an item from your Shopping Cart
+        CheckOutFromShoppingCart(user)
         ShoppingCartLoop(user)
       case 48 =>
         println("Go Back to Main Page")
@@ -38,15 +44,14 @@ object ShoppingCart {
 
   def ShowShoppingCart(user: User): Unit = {
     val stmt = connection.createStatement()
-    val user_id = user.userId
-    val rs: ResultSet = stmt.executeQuery("SELECT cart_id,add_date,post.item_id as item_id" +
-      ", item_name,item_description, item_price, item_condition, item_category, item_status from" +
-      "cart join item" +
-      "on cart.item_id = item.item_id" +
+    val user_id = user.id
+    val rs: ResultSet = stmt.executeQuery("SELECT cart_id,add_date,cart.item_id as item_id" +
+      ", item_name,item_description, item_price, item_condition, item_category, item_status from " +
+      "cart join item " +
+      "on cart.item_id = item.item_id " +
       s"WHERE cart.user_id = '$user_id'")
     while (rs.next()) {
-      val cart_id = rs.getInt("post_id")
-      val user_id = rs.getInt("user_id")
+      val cart_id = rs.getInt("cart_id")
       val add_date = rs.getDate("add_date")
       val item_id = rs.getInt("item_id")
       val item_name = rs.getString("item_name")
@@ -55,23 +60,37 @@ object ShoppingCart {
       val item_condition = rs.getString("item_condition")
       val item_category = rs.getString("item_category")
       val item_status = rs.getByte("item_status")
-      println("cart_id" + "," + "user_id" + "," + "add_date" + "," + "item_id" + "," + "item_name" + "," +
+      println("cart_id" + "," + "add_date" + "," + "item_id" + "," + "item_name" + "," +
         "item_description" + "," + "item_price" + "," + "item_condition" + "," + "item_category" + "," + "item_status") 
-      println(s"'$cart_id','$user_id','$add_date','$item_id','$item_name','$item_description','$item_price'" +
+      println(s"'$cart_id','$add_date','$item_id','$item_name','$item_description','$item_price'" +
         s",'$item_condition','$item_category','$item_status'")
-
     }
 
   }
 
-
   def RemoveFromShoppingCart(user: User): Unit = {
-    val user_id = user.userId
+    val user_id = user.id
+    val stmt = connection.createStatement()
+    println("Select the item you want to remove.")
+    val item_id = readLine("Enter the item id: ")
+    stmt.executeUpdate("DELETE FROM cart " +
+      s"WHERE item_id = '$item_id' and user_id='$user_id';")
+    println("Successfully remove the item!")
+
+  }
+
+  def CheckOutFromShoppingCart(user:User): Unit = {
+    val user_id = user.id
     val stmt = connection.createStatement()
     println("Select the item you want to pay for.")
     val item_id = readLine("Enter the item id: ")
     stmt.executeUpdate("DELETE FROM cart " +
       s"WHERE item_id = '$item_id' and user_id='$user_id'")
+    stmt.executeUpdate("DELETE FROM post " +
+      s"WHERE item_id = '$item_id'")
+    stmt.executeUpdate("DELETE FROM item " +
+      s"WHERE item_id = '$item_id'")
+    println("Successful Payment！")
 
   }
 }

@@ -9,7 +9,7 @@ object DataSource {
 
   connectionPool.setUsername("root")
   // TODO: reset the password.
-  connectionPool.setPassword("Lqy03210")
+  connectionPool.setPassword("Leona0213")
 
   connectionPool.setDriverClassName("com.mysql.cj.jdbc.Driver")
   connectionPool.setUrl(dbUrl)

@@ -136,6 +136,7 @@ object Main extends IOApp {
         mainLogic(user)
       case 50 =>
         // TODO: go to your shopping cart
+        ShoppingCart.ShoppingCartLoop(user)
         mainLogic(user)
       case 51 =>
         // TODO: go to your posting space
