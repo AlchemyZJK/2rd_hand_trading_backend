@@ -139,6 +139,7 @@ object Main extends IOApp {
         mainLogic(user)
       case 51 =>
         // TODO: go to your posting space
+        PostingSpace.PostingSpaceLoop(user)
         mainLogic(user)
       case 52 =>
         PersonalInfo.PersonalInfoLoop(user)
