@@ -3,9 +3,9 @@ import scala.annotation.tailrec
 import scala.io.StdIn.{readChar, readLine}
 
 object PostingSpace {
-  @tailrec
   private val connection = DataSource.connectionPool.getConnection
 
+  @tailrec
   def PostingSpaceLoop(user: User): Unit = {
     println("You could do the following Operations:\n" +
       "- View all your Postings: [1]\n" +
@@ -44,7 +44,7 @@ object PostingSpace {
   def ShowAllPostings(user: User): Unit = {
 
     val stmt = connection.createStatement()
-    val userid = user.userId
+    val userid = user.id
     val rs: ResultSet = stmt.executeQuery("SELECT post_id,post_date,b.item_id as item_id, item_name" +
       ",item_description, item_price, item_condition, item_category, item_status from" +
       s"(SELECT * from post WHERE user_id ='$userid') a" +
@@ -70,7 +70,7 @@ object PostingSpace {
 
   def AddOnePosting(user: User): Unit = {
     val stmt = connection.createStatement()
-    val userid = user.userId
+    val userid = user.id
     println("Please enter post information")
     val item_name = readLine("Enter item name: ")
     val item_description = readLine("Enter item description: ")
@@ -113,7 +113,7 @@ object PostingSpace {
 
   def EditOnePosting(user: User): Unit = {
     val stmt = connection.createStatement()
-    val userid = user.userId
+    val userid = user.id
     // First, choose one post to edit
     println("Please choose one post to edit")
     val post_id = readLine("Enter post id of the posting that you're going to edit: ")
