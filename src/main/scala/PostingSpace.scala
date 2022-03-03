@@ -33,7 +33,7 @@ object PostingSpace {
         PostingSpaceLoop(user)
       case 52 =>
         println("TODO: Delete one posting.")
-        // TODO: Choose an item and Add it to your Shopping Cart.
+        // Delete one posting.
         DeleteOnePosting(user)
         PostingSpaceLoop(user)
       case 48 =>
@@ -45,11 +45,9 @@ object PostingSpace {
 
     val stmt = connection.createStatement()
     val userid = user.id
-    val rs: ResultSet = stmt.executeQuery("SELECT post_id,post_date,b.item_id as item_id, item_name" +
-      ",item_description, item_price, item_condition, item_category, item_status from" +
-      s"(SELECT * from post WHERE user_id ='$userid') a" +
-      "join (SELECT * from item) b" +
-      "on a.item_id = b.item_id;")
+    val rs: ResultSet = stmt.executeQuery(s"SELECT * From (SELECT * from post WHERE user_id ='$userid') a join (SELECT * from item) b on a.item_id = b.item_id;")
+    println("post_id" + ", " + "post_date" + ", " + "item_id" + ", " + "item_name" + ", " + "item_description" + ","
+      + "item_price" + ", " + "item_condition" + ", " + "item_category" + ", " + "item_status")
 
     while (rs.next()) {
       val post_id = rs.getInt("post_id")
@@ -61,12 +59,11 @@ object PostingSpace {
       val item_condition = rs.getString("item_condition")
       val item_category = rs.getString("item_category")
       val item_status = rs.getByte("item_status")
-      println("post_id" + ", " + "post_date" + ", " + "item_id" + ", " + "item_name" + ", " + "item_description" + ","
-      + "item_price" + ", " + "item_condition" + ", " + "item_category" + ", " + "item_status")
+
       println(post_id + ", " + post_date + ", " + item_id + ", " + item_name + ", " + item_description + ","
         + item_price + ", " + item_condition + ", " + item_category + ", " + item_status)
     }
-    }
+  }
 
   def AddOnePosting(user: User): Unit = {
     val stmt = connection.createStatement()
@@ -87,17 +84,11 @@ object PostingSpace {
 
     // get the item_id that added into Table item just now
     val rs_itemid: ResultSet = stmt.executeQuery("SELECT MAX(item_id) as item_id FROM item;")
-//    if (rs_itemid.next()) {
-//      val item_id = rs_itemid.getInt("item_id")
-//      }
     rs_itemid.next()
     val item_id = rs_itemid.getInt("item_id")
 
     // get current date as post date
     val rs_curdate: ResultSet = stmt.executeQuery("SELECT CURDATE() as curdate;")
-//    if (rs_curdate.next()) {
-//      val post_date = rs_curdate.getDate("curdate")
-//    }
     rs_curdate.next()
     val post_date = rs_curdate.getDate("curdate")
 
@@ -121,9 +112,7 @@ object PostingSpace {
     // use post id to get original information
     val rs: ResultSet = stmt.executeQuery("SELECT b.item_id as item_id, item_name" +
       ",item_description, item_price, item_condition, item_category, item_status from" +
-      s"(SELECT * from post WHERE post_id ='$post_id') a" +
-      "join (SELECT * from item) b" +
-      "on a.item_id = b.item_id;")
+        s"(SELECT * from post WHERE post_id ='$post_id') a join (SELECT * from item) b on a.item_id = b.item_id;")
     rs.next()
 
     val item_id = rs.getInt("item_id")
@@ -139,8 +128,8 @@ object PostingSpace {
     val ans1: Int = readChar()
     ans1 match{
       case 49 =>
-//        println("Please enter new item name")
         item_name = readLine("Enter new item name: ")
+      case _ =>
     }
 
     // item description
@@ -148,8 +137,8 @@ object PostingSpace {
     val ans2: Int = readChar()
     ans2 match{
       case 49 =>
-        //        println("Please enter new item description")
         item_description = readLine("Enter new item description: ")
+      case _ =>
     }
 
     // item price
@@ -157,8 +146,8 @@ object PostingSpace {
     val ans3: Int = readChar()
     ans3 match{
       case 49 =>
-        //        println("Please enter new item price")
         item_price = readLine("Enter new item price: ").toFloat
+      case _ =>
     }
 
     // item condition
@@ -166,8 +155,8 @@ object PostingSpace {
     val ans4: Int = readChar()
     ans4 match{
       case 49 =>
-        //        println("Please enter new item condition")
         item_condition = readLine("Enter new item condition: ")
+      case _ =>
     }
 
     // item category
@@ -175,8 +164,8 @@ object PostingSpace {
     val ans5: Int = readChar()
     ans5 match{
       case 49 =>
-        //        println("Please enter new item category")
         item_category = readLine("Enter new item category: ")
+      case _ =>
     }
 
     // item status
@@ -184,26 +173,21 @@ object PostingSpace {
     val ans6: Int = readChar()
     ans6 match{
       case 49 =>
-        //        println("Please enter new item status")
-        item_status = readLine("Enter new item status: you can only input 0 (on shelf) or 1 (sold)")
+        item_status = readLine("Enter new item status: you can only input 0 (on shelf) or 1 (sold)").toByte
+      case _ =>
     }
 
     // update new item info into Table item
-    stmt.executeUpdate("UPDATE item" +
-      s"SET item_name='$item_name', item_description='$item_description', item_price='$item_price'" +
-      s", item_condition='$item_condition', item_category='$item_category', item_status='$item_status'" +
+    stmt.executeUpdate(s"UPDATE item SET item_name='$item_name', item_description='$item_description', item_price='$item_price', item_condition='$item_condition', item_category='$item_category', item_status='$item_status'" +
     s"WHERE item_id = '$item_id';")
-
-
+    
     // get current date as post date
     val rs_curdate: ResultSet = stmt.executeQuery("SELECT CURDATE() as curdate;")
     rs_curdate.next()
     val post_date = rs_curdate.getDate("curdate")
 
     // update new post info into Table post
-    stmt.executeUpdate("UPDATE post" +
-      s"SET post_date='$post_date'" +
-      s"WHERE post_id = '$post_id';")
+    stmt.executeUpdate(s"UPDATE post SET post_date='$post_date' WHERE post_id = '$post_id';")
 
     println("Successfully edit post.")
   }
@@ -211,7 +195,7 @@ object PostingSpace {
 
   def DeleteOnePosting(user: User): Unit ={
     val stmt = connection.createStatement()
-    val userid = user.userId
+    val userid = user.id
     // First, choose one post to delete
     println("Please choose one post to delete")
     val post_id = readLine("Enter post id of the posting that you're going to delete: ")
@@ -222,20 +206,14 @@ object PostingSpace {
     val item_id = rs.getInt("item_id")
 
     // delete corresponding item in Table item
-    stmt.executeUpdate("DELETE FROM item" +
-      s"WHERE item_id = '$item_id';")
+    stmt.executeUpdate(s"DELETE FROM item WHERE item_id = '$item_id';")
 
     // delete corresponding item in Table post
-    stmt.executeUpdate("DELETE FROM post" +
-      s"WHERE post_id = '$post_id';")
-
-
+    stmt.executeUpdate(s"DELETE FROM post WHERE post_id = '$post_id';")
+    
     // delete corresponding item in Table cart
-    stmt.executeUpdate("DELETE FROM cart" +
-      s"WHERE item_id = '$item_id';")
+    stmt.executeUpdate(s"DELETE FROM cart WHERE item_id = '$item_id';")
 
     println("Successfully delete post.")
   }
-
-
 }
