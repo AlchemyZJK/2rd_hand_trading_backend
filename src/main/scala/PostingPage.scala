@@ -16,12 +16,10 @@ object PostingPage {
       case 49 =>
         println("TODO: Show All the postings.")
         ShowAllPostings()
-        // TODO: Show All the postings.
         PostingPageLoop(user)
       case 50 =>
         println("TODO: Choose an item and Add it to your Shopping Cart.")
         AddToShoppingCart(user)
-        // TODO: Choose an item and Add it to your Shopping Cart.
         PostingPageLoop(user)
       case 48 =>
         println("Go Back to Main Page")
@@ -47,9 +45,9 @@ object PostingPage {
       val item_status = rs.getByte("item_status")
       println("post_id" + "," + "user_id" + "," + "post_date" + "," + "item_id" + "," + "item_name" + "," +
         "item_description" + "," + "item_price" + "," + "item_condition" + "," + "item_category" + "," + "item_status")
-      println(s"'$post_id','$user_id','$post_date','$item_id','$item_name','$item_description','$item_price'" +
-        s",'$item_condition','$item_category','$item_status'")
-  }
+      println(s"$post_id, $user_id, $post_date, $item_id, $item_name, $item_description, $item_price" +
+        s", $item_condition, $item_category, $item_status")
+    }
   }
 
   def AddToShoppingCart(user: User): Unit = {
@@ -59,7 +57,6 @@ object PostingPage {
     val user_id = user.id
     val rsCurdate: ResultSet = stmt.executeQuery("SELECT CURDATE() as addDate;")
     if (rsCurdate.next()) {
-      //rsCurdate.next()
       val add_date = rsCurdate.getDate("addDate")
       stmt.executeUpdate("INSERT INTO cart (user_id, item_id, add_date) " +
       "VALUES " +

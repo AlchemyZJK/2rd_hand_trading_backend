@@ -17,29 +17,20 @@ object ShoppingCart {
     val choice = readChar()
     choice match {
       case 49 =>
-        println("TODO: Show your Shopping Cart.")
-        //TODO:Show Shopping Cart.
         ShowShoppingCart(user)
         ShoppingCartLoop(user)
       case 50 =>
-        println("TODO: Choose an item and Add it to your Shopping Cart")
-        //TODO:Choose an item and Add it to your Shopping Cart
         PostingPage.AddToShoppingCart(user)
         ShoppingCartLoop(user)
       case 51 =>
-        println("TODO: Remove an item from your Shopping Cart")
-        //TODO:Remove an item from your Shopping Cart
         RemoveFromShoppingCart(user)
         ShoppingCartLoop(user)
       case 52 =>
-        println("TODO: Check out an item from your Shopping Cart")
-        //TODO:Check out an item from your Shopping Cart
         CheckOutFromShoppingCart(user)
         ShoppingCartLoop(user)
       case 48 =>
         println("Go Back to Main Page")
     }
-
   }
 
   def ShowShoppingCart(user: User): Unit = {
@@ -91,6 +82,5 @@ object ShoppingCart {
     stmt.executeUpdate("DELETE FROM item " +
       s"WHERE item_id = '$item_id'")
     println("Successful Payment！")
-
   }
 }
