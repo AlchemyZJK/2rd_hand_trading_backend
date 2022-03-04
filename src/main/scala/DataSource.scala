@@ -8,7 +8,6 @@ object DataSource {
   val connectionPool = new BasicDataSource()
 
   connectionPool.setUsername("root")
-  // TODO: reset the password.
   connectionPool.setPassword("zjk363506")
 
   connectionPool.setDriverClassName("com.mysql.cj.jdbc.Driver")

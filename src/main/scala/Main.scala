@@ -131,11 +131,10 @@ object Main extends IOApp {
     val choice = readChar()
     choice match {
       case 49 =>
-        // TODO: view all the postings
         PostingPage.PostingPageLoop(user)
         mainLogic(user)
       case 50 =>
-        // TODO: go to your shopping cart
+        ShoppingCart.ShoppingCartLoop(user)
         mainLogic(user)
       case 51 =>
         PostingSpace.PostingSpaceLoop(user)

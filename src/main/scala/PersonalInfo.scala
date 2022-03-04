@@ -24,17 +24,20 @@ object PersonalInfo {
         } else {
           println("Error getting the User Information.")
         }
+        println("============================================================================")
         PersonalInfoLoop(user)
       case 50 =>
         val newUserName = readLine("Enter your new user name: ")
         stmt.executeUpdate(s"UPDATE user SET user_name='${newUserName}' WHERE user_id=${user.id};")
         user.name = newUserName
         println("Your user name changed successfully!")
+        println("============================================================================")
         PersonalInfoLoop(user)
       case 51 =>
         val newPassword = readLine("Enter your new password: ")
         stmt.executeUpdate(s"UPDATE user SET user_password='${newPassword}' WHERE user_id=${user.id};")
         println("Your password changed successfully!")
+        println("============================================================================")
         PersonalInfoLoop(user)
       case 48 =>
         println("Go Back to Main Page")

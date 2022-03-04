@@ -17,24 +17,24 @@ object PostingSpace {
     val choice = readChar()
     choice match {
       case 49 =>
-        println("TODO: Show all your postings.")
         // Show All the postings.
         ShowAllPostings(user)
+        println("============================================================================")
         PostingSpaceLoop(user)
       case 50 =>
-        println("TODO: Add one posting.")
         // Add one Posting.
         AddOnePosting(user)
+        println("============================================================================")
         PostingSpaceLoop(user)
       case 51 =>
-        println("TODO: Edit one posting.")
         // Edit one posting.
         EditOnePosting(user)
+        println("============================================================================")
         PostingSpaceLoop(user)
       case 52 =>
-        println("TODO: Delete one posting.")
         // Delete one posting.
         DeleteOnePosting(user)
+        println("============================================================================")
         PostingSpaceLoop(user)
       case 48 =>
         println("Go Back to Main Page")
